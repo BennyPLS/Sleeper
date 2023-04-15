@@ -9,5 +9,3 @@ ignored-players: []
 
 rest-message: "title @a actionbar {\"text\":\"{actual} / {necessary} Players to skip night.\"}"
 skip-night-message: "say Players skipped the night"
-
-

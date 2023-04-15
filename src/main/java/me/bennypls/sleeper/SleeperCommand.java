@@ -56,7 +56,7 @@ public class SleeperCommand implements CommandExecutor {
         }
 
         if (!resting.skipNight(player)) {
-            player.sendMessage("It's already day!");
+            player.sendMessage("Too close to sunrise, wait more...");
         }
 
         return true;

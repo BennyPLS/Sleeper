@@ -12,7 +12,7 @@ public class Resting {
     private final JavaPlugin plugin;
     private final Configuration configuration;
     private static final long SUNRISE_TIME = 23850;
-    private static final long NIGHTFALL_TIME = 12000;
+    private static final long DIFF_TIME_MIN = 1000;
     public Resting(JavaPlugin plugin, Configuration configuration) {
         this.plugin = plugin;
         this.configuration = configuration;
@@ -22,9 +22,9 @@ public class Resting {
     public boolean skipNight(Player player) {
         World world = player.getWorld();
 
-        long timeDiff = world.getTime() - SUNRISE_TIME;
+        long timeDiff = Math.abs(SUNRISE_TIME - world.getTime());
 
-        if (timeDiff < NIGHTFALL_TIME) {
+        if (timeDiff < DIFF_TIME_MIN && isClear(world)) {
             return false;
         }
 
@@ -39,8 +39,12 @@ public class Resting {
         return true;
     }
 
+    private static boolean isClear(World world) {
+        return !(world.hasStorm() || world.isThundering());
+    }
+
     public void skipNightAnimation(World world) {
-        var totalIntervals = world.getTime() - SUNRISE_TIME / configuration.getAnimationSpeed();
+        var totalIntervals = Math.abs(world.getTime() - SUNRISE_TIME) / configuration.getAnimationSpeed();
 
         for (int i = 0; i < totalIntervals; i++) {
             Bukkit.getScheduler().runTaskLater(
