@@ -4,11 +4,8 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class SleeperCommand implements CommandExecutor {
-
-    private final JavaPlugin plugin;
     private final Resting resting;
     private final Configuration configuration;
 
@@ -44,8 +41,7 @@ public class SleeperCommand implements CommandExecutor {
         These players will not be counted towards the total number of players needed to sleep through the night.
         """;
 
-    public SleeperCommand(JavaPlugin plugin, Resting resting, Configuration configuration) {
-        this.plugin = plugin;
+    public SleeperCommand(Resting resting, Configuration configuration) {
         this.resting = resting;
         this.configuration = configuration;
     }

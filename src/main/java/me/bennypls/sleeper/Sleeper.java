@@ -11,10 +11,9 @@ public class Sleeper extends JavaPlugin {
         Resting resting = new Resting(this, configuration);
 
         getCommand("sleeper")
-                .setExecutor(new SleeperCommand(this, resting, configuration));
+                .setExecutor(new SleeperCommand(resting, configuration));
 
         getServer().getPluginManager()
                 .registerEvents(new BedListener(this, configuration, resting), this);
-
     }
 }

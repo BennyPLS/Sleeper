@@ -28,13 +28,13 @@ public final class Configuration {
     }
 
     private void loadConfigurations() {
-        percentageNecessaryToSleep = configuration.getDouble("percentage-necessary-to-sleep", 0.2);
+        percentageNecessaryToSleep = configuration.getDouble("percentage-necessary-to-sleep", 0.25);
         ignoredPlayers = configuration.getStringList("ignored-players");
         isAnimated = configuration.getBoolean("is-animated", true);
-        animationSpeed = configuration.getInt("animation-speed", 100);
-        animationInterval = configuration.getInt("animation-interval", 5);
-        restMessage = configuration.getString("rest-message", "");
-        skipNightMessage = configuration.getString("skip-night-message", "");
+        animationSpeed = configuration.getInt("animation-speed", 125);
+        animationInterval = configuration.getInt("animation-interval", 1);
+        restMessage = configuration.getString("rest-message", "title @a actionbar {\"text\":\"{actual} / {necessary} Players to skip night.\"}");
+        skipNightMessage = configuration.getString("skip-night-message", "say Players skipped the night");
     }
 
     public List<String> getIgnoredPlayers() {
