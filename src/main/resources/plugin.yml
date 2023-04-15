@@ -1,13 +1,12 @@
 name: Sleeper
 main: me.bennypls.sleeper.Sleeper
-version: 1.19.4-0.9.1
+version: 1.19.4-0.9.2
 author: BennyPLS
-
 
 commands:
   sleeper:
-    description: This command is used for administrating the sleeper plugin with diferents arguments.
-    usage: /sleeper <args>
+    description: Sleeper Plugin Administration
+    usage: /sleeper help
     permission: sleeper.sleeper
     permission-message: You don't have permission.
 
