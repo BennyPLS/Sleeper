@@ -1,11 +1,28 @@
 # Default Setting for Sleeper
 
+# NOTE : 40 ticks = 1 second.
+# With unstable lag this can change.
+
+# Animation
 is-animated: true
+
+# The time change between Intervals (time in ticks)
 animation-speed: 125
+
+# The time to wait between Intervals (time in ticks)
 animation-interval: 1
 
+# Sleep Configuration
+
+# CONSTANT MIN NECESSARY [ 1 player ] #
 percentage-necessary-to-sleep: 0.25
+
+# Player Names to be ignored when counting to sleeping.
 ignored-players: []
+
+# Message Configuration.
+
+# NOTE : This messages will be executed as a command by the console.
 
 rest-message: "title @a actionbar {\"text\":\"{actual} / {necessary} Players to skip night.\"}"
 skip-night-message: "say Players skipped the night"
