@@ -6,7 +6,7 @@
 
     <groupId>me.bennypls.sleeper</groupId>
     <artifactId>sleeper</artifactId>
-    <version>1.19.4-0.9.6</version>
+    <version>1.19.4-0.9.7</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>

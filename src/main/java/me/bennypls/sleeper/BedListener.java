@@ -11,6 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 /**
  * <h1>
  * BedListener
+ *
  * <p>
  * This is a Bukkit event listener that listens for player bed events.
  *
@@ -19,28 +20,15 @@ import org.bukkit.plugin.java.JavaPlugin;
  * this is for counting the number of players resting and triggers a skip night event if enough
  * players are resting. This number of players is configurable in config.yml and uses a reference to
  * the JavaPlugin and Configuration Classes.
- *
- * @author BennyPLS
- * @see Configuration
- * @see Resting
- * @since 0.9
  */
 public final class BedListener implements Listener {
-    /**
-     * The JavaPlugin instance used by this listener.
-     */
+    /** The JavaPlugin instance used by this listener. */
     private final JavaPlugin plugin;
-    /**
-     * The Configuration instance used by this listener.
-     */
+    /** The Configuration instance used by this listener. */
     private final Configuration configuration;
-    /**
-     * The Resting instance used by this listener.
-     */
+    /** The Resting instance used by this listener. */
     private final Resting resting;
-    /**
-     * The number of players currently resting.
-     */
+    /** The number of players currently resting. */
     private int actualPlayersResting = 0;
 
     /**
