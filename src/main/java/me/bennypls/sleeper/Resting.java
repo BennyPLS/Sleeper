@@ -132,7 +132,7 @@ public class Resting {
      * @return true if the weather is clear, false otherwise.
      */
     private static boolean isClear(World world) {
-        return !(world.hasStorm() || world.isThundering());
+        return !(world.isThundering());
     }
 
     /**

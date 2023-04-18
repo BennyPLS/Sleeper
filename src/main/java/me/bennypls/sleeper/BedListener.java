@@ -8,6 +8,8 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.logging.Level;
+
 /**
  * <h1>
  * BedListener
@@ -80,12 +82,12 @@ public final class BedListener implements Listener {
      */
     private void startResting(Player player) {
         if (!player.isSleeping()) {
-            plugin.getLogger().info(player.getName() + " is not sleeping.");
+            plugin.getLogger().log(Level.FINER, player.getName() + " is not sleeping.");
             return;
         }
 
         if (configuration.getIgnoredPlayers().contains(player.getName())) {
-            plugin.getLogger().info(player.getName() + " is being ignored.");
+            plugin.getLogger().log(Level.FINER, player.getName() + " is being ignored.");
             return;
         }
 
