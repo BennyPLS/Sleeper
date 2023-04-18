@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
+import java.util.Random;
 
 /**
  * <h1>
@@ -28,6 +29,8 @@ public class Resting {
      * the different necessary intervals also determined the length of intervals by the animation speed.
      */
     private static final long SUNRISE_TIME = 23850;
+    /** A static variable to know if it is currently playing a skip-night Animation */
+    private static boolean isSkippingNight = false;
 
     /**
      * <h1>
@@ -67,9 +70,7 @@ public class Resting {
             }
         }
 
-        skipNight(world);
-
-        return true;
+        return skipNight(world);
     }
 
     /**
@@ -79,10 +80,16 @@ public class Resting {
      * <p>
      * Skips the night for the given world. The configured message is executed,
      * and an animation may be played if the configuration specifies it.
+     * Will not skip the night if {@link Resting#isSkippingNight} is true.
      *
      * @param world the world to skip the night for.
+     * @return true if the night was skipped, false otherwise.
      */
-    public void skipNight(World world) {
+    public boolean skipNight(World world) {
+        if (isSkippingNight) {
+            return false;
+        }
+
         executeCommand(configuration.getSkipNightMessage());
 
         if (configuration.isAnimated()) {
@@ -90,6 +97,8 @@ public class Resting {
         } else {
             world.setTime(SUNRISE_TIME);
         }
+
+        return true;
     }
 
     /**
@@ -120,14 +129,27 @@ public class Resting {
      */
     public void skipNightAnimation(World world) {
         var totalIntervals = Math.abs(world.getTime() - SUNRISE_TIME) / configuration.getAnimationSpeed();
+        isSkippingNight = true;
 
-        for (int i = 0; i < totalIntervals; i++) {
+        for (int i = 0; i < totalIntervals - 1; i++) {
             Bukkit.getScheduler().runTaskLater(
                 plugin,
                 () -> world.setTime(world.getTime() + configuration.getAnimationSpeed()),
                 (long) configuration.getAnimationInterval() * i
             );
         }
+
+        Bukkit.getScheduler().runTaskLater(
+            plugin,
+            () -> {
+                world.setTime(world.getTime() + configuration.getAnimationSpeed());
+                if (!isClear(world) && configuration.canSkipWeather()) {
+                    world.setClearWeatherDuration(new Random().nextInt(1200, 24000));
+                }
+                isSkippingNight = false;
+            },
+            (long) configuration.getAnimationInterval() * (totalIntervals - 1)
+        );
     }
 
     /**

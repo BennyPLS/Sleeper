@@ -134,11 +134,13 @@ public class SleeperCommand implements CommandExecutor {
         }
 
         if (args.length != 1) {
-            player.sendMessage("Unnecessary arguments");
+            player.sendMessage("Unnecessary arguments.");
             return false;
         }
 
-        resting.skipNight(player.getWorld());
+        if (!resting.skipNight(player.getWorld())) {
+            player.sendMessage("It's already skipping night.");
+        }
 
         return true;
     }
