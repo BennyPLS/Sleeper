@@ -28,12 +28,6 @@ public class Resting {
      * the different necessary intervals also determined the length of intervals by the animation speed.
      */
     private static final long SUNRISE_TIME = 23850;
-    /**
-     * The minimum time difference that must exist between the current time and sunrise time
-     * in order to skip the night. This is a constant value that is used to prevent the night from
-     * being skipped too early, before it has had a chance to get dark.
-     */
-    private static final long DIFF_TIME_MIN = 1000;
 
     /**
      * <h1>
@@ -55,10 +49,9 @@ public class Resting {
      * Skip Night
      *
      * <p>
-     * Skips the night for the world of given player if the conditions are met. The conditions are that the
-     * time difference between the current time and sunrise time must be more than the minimum time
-     * difference or the weather it not clear. If the night is skipped, the configured message
-     * is executed and an animation may be played if the configuration specifies it.
+     * Skips the night for the world of the given player if the conditions are met.
+     * If the night is skipped, the configured message is executed, and
+     * an animation may be played if the configuration specifies it.
      *
      * @param player the player for whom the world to skip the night.
      * @return true if the night was skipped, false otherwise.
@@ -66,21 +59,37 @@ public class Resting {
     public boolean skipNight(Player player) {
         World world = player.getWorld();
 
-        long timeDiff = Math.abs(SUNRISE_TIME - world.getTime());
-
-        if (timeDiff < DIFF_TIME_MIN && isClear(world)) {
+        if (isClear(world)) {
             return false;
+        } else {
+            if (!configuration.canSkipWeather()) {
+                return false;
+            }
         }
 
+        skipNight(world);
+
+        return true;
+    }
+
+    /**
+     * <h1>
+     * Skip Night
+     *
+     * <p>
+     * Skips the night for the given world. The configured message is executed,
+     * and an animation may be played if the configuration specifies it.
+     *
+     * @param world the world to skip the night for.
+     */
+    public void skipNight(World world) {
         executeCommand(configuration.getSkipNightMessage());
 
         if (configuration.isAnimated()) {
             skipNightAnimation(world);
         } else {
-            world.setTime(23850);
+            world.setTime(SUNRISE_TIME);
         }
-
-        return true;
     }
 
     /**

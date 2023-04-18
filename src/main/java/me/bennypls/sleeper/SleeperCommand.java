@@ -122,7 +122,7 @@ public class SleeperCommand implements CommandExecutor {
      * skip
      *
      * <p>
-     * Allows a player to skip the night if conditions are met.
+     * Allows a player to skip the night or day and going to the next sunrise.
      *
      * @param sender the CommandSender executing the command
      * @param args   the arguments passed to the command
@@ -138,9 +138,7 @@ public class SleeperCommand implements CommandExecutor {
             return false;
         }
 
-        if (!resting.skipNight(player)) {
-            player.sendMessage("Too close to sunrise, wait more...");
-        }
+        resting.skipNight(player.getWorld());
 
         return true;
     }

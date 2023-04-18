@@ -14,6 +14,9 @@ animation-interval: 1
 
 # Sleep Configuration
 
+# Can skip when whether is not clear (Raining or Thundering)
+can-skip-weather: true
+
 # CONSTANT MIN NECESSARY [ 1 player ] #
 percentage-necessary-to-sleep: 0.25
 
@@ -23,6 +26,8 @@ ignored-players: []
 # Message Configuration.
 
 # NOTE : This messages will be executed as a command by the console.
+# NOTE 2 : "{playerName}" "{actual}" "{necessary}" are variables, actually are only available in 'rest-message'.
 
 rest-message: "title @a actionbar {\"text\":\"{actual} / {necessary} Players to skip night.\"}"
 skip-night-message: "say Players skipped the night"
+cannot-skip-night-message: "say Cannot skip the night"

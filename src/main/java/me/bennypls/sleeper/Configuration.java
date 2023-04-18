@@ -34,7 +34,10 @@ public final class Configuration {
     private String restMessage;
     /** The message that should be displayed to players when the night is skipped. */
     private String skipNightMessage;
-
+    /** The message that should be displayed to players when they cannot skip night */
+    private String cannotSkipNightMessage;
+    /** Can skip when whether is not clear (Raining or Thundering) */
+    private boolean canSkipWeather;
     /**
      * <h1>
      * Configuration Constructor
@@ -73,11 +76,13 @@ public final class Configuration {
     private void loadConfiguration() {
         percentageNecessaryToSleep = configuration.getDouble("percentage-necessary-to-sleep", 0.25);
         ignoredPlayers = configuration.getStringList("ignored-players");
+        canSkipWeather = configuration.getBoolean("can-skip-weather", true);
         isAnimated = configuration.getBoolean("is-animated", true);
         animationSpeed = configuration.getInt("animation-speed", 125);
         animationInterval = configuration.getInt("animation-interval", 1);
         restMessage = configuration.getString("rest-message", "title @a actionbar {\"text\":\"{actual} / {necessary} Players to skip night.\"}");
         skipNightMessage = configuration.getString("skip-night-message", "say Players skipped the night");
+        cannotSkipNightMessage = configuration.getString("cannot-skip-night-message", "say Cannot skip the night");
     }
 
     /**
@@ -213,5 +218,31 @@ public final class Configuration {
      */
     public String getSkipNightMessage() {
         return skipNightMessage;
+    }
+
+    /**
+     * <h1>
+     * getSkipNightMessage
+     *
+     * <p>
+     * Returns a boolean if the players can skip the weather with sleeper.
+     *
+     * @return canSkipWeather a boolean if the players can skip the weather
+     */
+    public boolean canSkipWeather() {
+        return canSkipWeather;
+    }
+
+    /**
+     * <h1>
+     * getSkipNightMessage
+     *
+     * <p>
+     * Returns the message to display when the night cannot be skipped.
+     *
+     * @return cannotSkipNightMessage the message to display when the night cannot be skipped.
+     */
+    public String getCannotSkipNightMessage() {
+        return cannotSkipNightMessage;
     }
 }

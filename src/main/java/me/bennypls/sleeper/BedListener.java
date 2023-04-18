@@ -99,7 +99,9 @@ public final class BedListener implements Listener {
             .replace("{necessary}", String.valueOf(necessaryToSkip)));
 
         if (actualPlayersResting >= necessaryToSkip) {
-            resting.skipNight(player);
+            if (!resting.skipNight(player)) {
+                resting.executeCommand(configuration.getCannotSkipNightMessage());
+            }
         }
     }
 
