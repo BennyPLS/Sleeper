@@ -29,6 +29,11 @@ public class Resting {
      * the different necessary intervals also determined the length of intervals by the animation speed.
      */
     private static final long SUNRISE_TIME = 23850;
+    /**
+     * The time at which nightfall occurs in Minecraft.This is a constant value that is used to
+     * calculate the time to know if is night.
+     */
+    private static final long NIGHTFALL_TIME = 13000;
     /** A static variable to know if it is currently playing a skip-night Animation */
     private static boolean isSkippingNight = false;
 
@@ -62,15 +67,29 @@ public class Resting {
     public boolean skipNight(Player player) {
         World world = player.getWorld();
 
-        if (isClear(world)) {
+        if (isClear(world) && isNight(world)) {
             return false;
         } else {
-            if (!configuration.canSkipWeather()) {
+            if (!configuration.canSkipWeather() && isNight(world)) {
                 return false;
             }
         }
 
         return skipNight(world);
+    }
+
+    /**
+     * <h1>
+     * isNight
+     *
+     * <p>
+     * This is to know if in a world given is night time.
+     *
+     * @param world The world to know the time.
+     * @return true if is night, false otherwise.
+     */
+    private static boolean isNight(World world) {
+        return world.getTime() < NIGHTFALL_TIME;
     }
 
     /**

@@ -13,6 +13,7 @@ While this plugin may have limited features, its advantage lies in its lightweig
 - An Ignored List that not counts toward the player-based night-skipping
 - Skip Night Animation.
 - Configuration options for messages, percentage for skip, and animation speed.
+- When Skip Night and 
 
 ## ⛶ Commands ⛶
 
@@ -57,8 +58,13 @@ for the night to be skipped.
 The `ignored-players` setting is empty by default but can be filled with the names of players who should not be counted
 towards the percentage needed for sleeping.
 
+The `can-skip-weather` setting is set to true, which means that by default skip night works when is raining.
+
 The `rest-message` setting contains a message that will be executed as a command by the console. This message displays
 the number of players who are currently sleeping and the necessary number of players needed to skip the night.
 
 The `skip-night-message` setting contains a message that will be executed as a command by the console when the night is
+skipped.The "{playerName}", "{actual}", "{necessary}", are variables, actually are only available in 'rest-message'.
+
+The `cannot-skip-night-message` setting contains a message that will be executed as a command by the console when the night cannot be
 skipped.
