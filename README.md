@@ -1,5 +1,11 @@
 # 🛏 Sleeper 🛏
 
+# ⚠ WARNING ⚠
+
+> For certain circumstances, I can't test myself this plugin regularly,
+> For that I need FEEDBACK on problems I don't know.
+> Feature Request and IDEAS 
+
 ## ❮ Introduction ❯
 
 Sleeper is a Spigot plugin that redefines how sleep works in your server, making it easier for all online players to get
@@ -10,7 +16,7 @@ in bed quickly and skip through the night.
 While this plugin may have limited features, its advantage lies in its lightweight nature.
 
 - Skipping of nighttime through partial player-based activation.
-- An Ignored List that not counts toward the player-based night-skipping
+- An Ignored List that doesn't count toward the player-based night-skipping
 - Skip Night Animation.
 - Configuration options for messages, percentage for skip, and animation speed.
 - When Skip Night and 
