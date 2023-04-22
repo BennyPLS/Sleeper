@@ -19,7 +19,6 @@ While this plugin may have limited features, its advantage lies in its lightweig
 - An Ignored List that doesn't count toward the player-based night-skipping
 - Skip Night Animation.
 - Configuration options for messages, percentage for skip, and animation speed.
-- When Skip Night and 
 
 ## ⛶ Commands ⛶
 
@@ -47,6 +46,8 @@ Here's a concise guide on how to install the Sleeper plugin on a Minecraft serve
 
 That's it! The Sleeper plugin should now be up and running on your Minecraft server, ready for you to configure and use
 as desired.
+
+To get help in-game of the command utility, type in the chat being a OP `/sleeper help`.
 
 ## 🖹 Configuration 🖹
 
