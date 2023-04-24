@@ -6,6 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -35,7 +37,7 @@ public class Resting {
      */
     private static final long NIGHTFALL_TIME = 13000;
     /** A static variable to know if it is currently playing a skip-night Animation */
-    private static boolean isSkippingNight = false;
+    private static final Map<World, Boolean> isSkippingNight = new HashMap<>();
 
     /**
      * <h1>
@@ -57,25 +59,57 @@ public class Resting {
      * Skip Night
      *
      * <p>
-     * Skips the night for the world of the given player if the conditions are met.
-     * If the night is skipped, the configured message is executed, and
-     * an animation may be played if the configuration specifies it.
+     * Skips the night for the given world if the conditions are meet.
+     * The configured message is executed, and an animation may be played
+     * if the configuration specifies it.
+     * Will not skip the night if {@link Resting#isSkippingNight} is true.
+     * <p>
+     * Can be forcefully skip night if forced is true;
      *
-     * @param player the player for whom the world to skip the night.
+     * @param world the world to skip the night for.
+     * @param forced forcefully skip night ignoring conditions.
      * @return true if the night was skipped, false otherwise.
      */
-    public boolean skipNight(Player player) {
-        World world = player.getWorld();
-
-        if (isClear(world) && isNight(world)) {
+    public boolean skipNight(World world, boolean forced) {
+        if (isSkippingNight.getOrDefault(world, false)) {
             return false;
-        } else {
-            if (!configuration.canSkipWeather() && isNight(world)) {
-                return false;
-            }
         }
 
-        return skipNight(world);
+        if (!canSkipNight(world) && forced) {
+            return false;
+        }
+
+        executeCommand(configuration.getSkipNightMessage());
+
+        if (configuration.isAnimated()) {
+            skipNightAnimation(world);
+        } else {
+            world.setTime(SUNRISE_TIME);
+        }
+
+        return true;
+    }
+
+    /**
+     * <h1>
+     * Can Skip Night
+     *
+     * <p>
+     * Looks if can skip the night for the world if the conditions are met.
+     *
+     * @param world the world to look if it can skip the night.
+     * @return true if the night can be skipped, false otherwise.
+     */
+    public boolean canSkipNight(World world) {
+        if (isNight(world) && isClear(world)) {
+            return true;
+        }
+
+        if (isClear(world) && !(isNight(world))) {
+            return false;
+        }
+
+        return configuration.canSkipWeather();
     }
 
     /**
@@ -90,34 +124,6 @@ public class Resting {
      */
     private static boolean isNight(World world) {
         return world.getTime() < NIGHTFALL_TIME;
-    }
-
-    /**
-     * <h1>
-     * Skip Night
-     *
-     * <p>
-     * Skips the night for the given world. The configured message is executed,
-     * and an animation may be played if the configuration specifies it.
-     * Will not skip the night if {@link Resting#isSkippingNight} is true.
-     *
-     * @param world the world to skip the night for.
-     * @return true if the night was skipped, false otherwise.
-     */
-    public boolean skipNight(World world) {
-        if (isSkippingNight) {
-            return false;
-        }
-
-        executeCommand(configuration.getSkipNightMessage());
-
-        if (configuration.isAnimated()) {
-            skipNightAnimation(world);
-        } else {
-            world.setTime(SUNRISE_TIME);
-        }
-
-        return true;
     }
 
     /**
@@ -148,7 +154,7 @@ public class Resting {
      */
     public void skipNightAnimation(World world) {
         var totalIntervals = Math.abs(world.getTime() - SUNRISE_TIME) / configuration.getAnimationSpeed();
-        isSkippingNight = true;
+        isSkippingNight.put(world, true);
 
         for (int i = 0; i < totalIntervals - 1; i++) {
             Bukkit.getScheduler().runTaskLater(
@@ -165,7 +171,7 @@ public class Resting {
                 if (!isClear(world) && configuration.canSkipWeather()) {
                     world.setClearWeatherDuration(new Random().nextInt(1200, 24000));
                 }
-                isSkippingNight = false;
+                isSkippingNight.put(world, false);
             },
             (long) configuration.getAnimationInterval() * (totalIntervals - 1)
         );
@@ -176,12 +182,13 @@ public class Resting {
      * getTotalNecessaryToSkip
      *
      * <p>
-     * Determines the total number of players necessary for sleeping to be skipped.
+     * Determines the total number of players necessary for sleeping to be skipped for a given world.
      *
+     * @param world The world to calculate from.
      * @return the total number of players necessary for sleeping to be skipped
      */
-    public int getTotalNecessaryToSkip() {
-        Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
+    public int getTotalNecessaryToSkip(World world) {
+        Collection<? extends Player> players = world.getPlayers();
         int totalPlayers = 0;
 
         for (Player player : players) {
