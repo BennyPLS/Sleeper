@@ -1,6 +1,7 @@
 package me.bennypls.sleeper;
 
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,6 +9,8 @@ import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -24,14 +27,20 @@ import java.util.logging.Level;
  * the JavaPlugin and Configuration Classes.
  */
 public final class BedListener implements Listener {
-    /** The JavaPlugin instance used by this listener. */
+    /**
+     * The JavaPlugin instance used by this listener.
+     */
     private final JavaPlugin plugin;
-    /** The Configuration instance used by this listener. */
+    /**
+     * The Configuration instance used by this listener.
+     */
     private final Configuration configuration;
-    /** The Resting instance used by this listener. */
+    /**
+     * The Resting instance used by this listener.
+     */
     private final Resting resting;
-    /** The number of players currently resting. */
-    private int actualPlayersResting = 0;
+    /** The number of players currently resting in a hashmap by world. */
+    private final Map<World, Integer> actualPlayersResting = new HashMap<>();
 
     /**
      * <h1>
@@ -91,17 +100,19 @@ public final class BedListener implements Listener {
             return;
         }
 
-        actualPlayersResting++;
+        var playerWorld = player.getWorld();
 
-        var necessaryToSkip = resting.getTotalNecessaryToSkip();
+        actualPlayersResting.put(playerWorld, actualPlayersResting.getOrDefault(playerWorld, 0) + 1);
+
+        var necessaryToSkip = resting.getTotalNecessaryToSkip(playerWorld);
 
         resting.executeCommand(configuration.getRestMessage()
-            .replace("{playerName}", player.getName())
-            .replace("{actual}", String.valueOf(actualPlayersResting))
-            .replace("{necessary}", String.valueOf(necessaryToSkip)));
+                .replace("{playerName}", player.getName())
+                .replace("{actual}", String.valueOf(actualPlayersResting.get(playerWorld)))
+                .replace("{necessary}", String.valueOf(necessaryToSkip)));
 
-        if (actualPlayersResting >= necessaryToSkip) {
-            if (!resting.skipNight(player)) {
+        if (actualPlayersResting.get(playerWorld) >= necessaryToSkip) {
+            if (!resting.skipNight(playerWorld, false)) {
                 resting.executeCommand(configuration.getCannotSkipNightMessage());
             }
         }
@@ -118,7 +129,9 @@ public final class BedListener implements Listener {
      */
     @EventHandler
     public void stopResting(PlayerBedLeaveEvent event) {
-        actualPlayersResting--;
+        var playerWorld = event.getPlayer().getWorld();
+
+        actualPlayersResting.put(playerWorld, actualPlayersResting.get(playerWorld) - 1);
     }
 
 }
