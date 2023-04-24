@@ -3,9 +3,15 @@ main: me.bennypls.sleeper.Sleeper
 version: 1.1.1
 author: BennyPLS
 
+api-version: 1.19
+load: POSTWORLD
+website: https://github.com/BennyPLS/Sleeper
+prefix: Sleeper
+
 commands:
   sleeper:
     description: Sleeper Plugin Administration
+    aliases: slp
     usage: /sleeper help
     permission: sleeper.sleeper
     permission-message: You don't have permission.

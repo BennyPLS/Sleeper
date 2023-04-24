@@ -6,11 +6,12 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="sleeper" />
+        <module name="Sleeper" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="experimental" target="17" />
+      <module name="sleeper" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

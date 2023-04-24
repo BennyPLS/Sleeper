@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>me.bennypls.sleeper</groupId>
-    <artifactId>sleeper</artifactId>
+    <artifactId>Sleeper</artifactId>
     <version>1.19.4-1.1.1</version>
     <packaging>jar</packaging>
 
