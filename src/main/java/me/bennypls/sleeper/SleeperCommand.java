@@ -138,7 +138,7 @@ public class SleeperCommand implements CommandExecutor {
             return false;
         }
 
-        if (!resting.skipNight(player.getWorld())) {
+        if (!resting.skipNight(player.getWorld(), true)) {
             player.sendMessage("It's already skipping night.");
         }
 
